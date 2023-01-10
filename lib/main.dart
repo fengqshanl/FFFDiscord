@@ -46,6 +46,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
+enum DrawerType {
+  left,
+  right,
+  middle
+}
+
 class Gesture extends StatefulWidget {
   const Gesture({Key? key}) : super(key: key);
 
@@ -55,32 +61,91 @@ class Gesture extends StatefulWidget {
 
 class _GestureState extends State<Gesture> {
   Offset offset = const Offset(0.0,0.0);
+  DrawerType currentDrawer = DrawerType.middle;
+
+  Widget bottomRender(){
+    if(currentDrawer == DrawerType.left){
+      return const Positioned(child: LeftDrawer());
+    }else if(currentDrawer == DrawerType.right){
+      return const Positioned(child: RightDrawer());
+    }
+    return const Text("");
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onHorizontalDragUpdate: (detail){
         setState(() {
-          offset = detail.localPosition;
+          if((offset.dx + detail.delta.dx) > 0){
+            currentDrawer = DrawerType.left;
+          }else if((offset.dx + detail.delta.dx) < 0){
+            currentDrawer = DrawerType.right;
+          }
+          offset = Offset(offset.dx + detail.delta.dx, 0);
         });
       },
-      child: Container(
+      onHorizontalDragEnd: (detail){
+          var current = offset.dx;
+          if(current >= (MediaQuery.of(context).size.width / 2)){
+            setState((){
+              offset = Offset(MediaQuery.of(context).size.width - 50, 0);
+            });
+          }else if(((MediaQuery.of(context).size.width / 2) + current) <= 0){
+            setState((){
+              offset = Offset(50 - MediaQuery.of(context).size.width, 0);
+            });
+          }else{
+            setState(() {
+              offset = const Offset(0, 0);
+            });
+          }
+        },
+      child: SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        border: Border.all(width: 4, color: Colors.red),
-      ),
       child: Stack(
         fit: StackFit.expand,
         children: [
+          bottomRender(),
           Positioned(
-              left: offset.dx,
-              child:const MyHomePage() ,
+            left: offset.dx,
+            child:const MyHomePage() ,
           ),
         ],
       ))
     );
   }
 }
+
+class LeftDrawer extends StatefulWidget {
+  const LeftDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<LeftDrawer> createState() => _LeftDrawerState();
+}
+
+class _LeftDrawerState extends State<LeftDrawer> {
+  @override
+  Widget build(BuildContext context) {
+    return const Text("left drawer", style:TextStyle(color: Colors.red));
+  }
+}
+
+class RightDrawer extends StatefulWidget {
+  const RightDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<RightDrawer> createState() => _RightDrawerState();
+}
+
+class _RightDrawerState extends State<RightDrawer> {
+  @override
+  Widget build(BuildContext context) {
+    return const Text("right drawer", style: TextStyle(color: Colors.yellow));
+  }
+}
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
