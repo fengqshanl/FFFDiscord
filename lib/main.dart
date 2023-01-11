@@ -1,5 +1,8 @@
+import 'package:chat/right.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'left.dart';
 
   void main() async {
     await ScreenUtil.ensureScreenSize();
@@ -61,13 +64,20 @@ class Gesture extends StatefulWidget {
 
 class _GestureState extends State<Gesture> {
   Offset offset = const Offset(0.0,0.0);
+  Offset bottomMenu = const Offset(0.0, -80.0);
   DrawerType currentDrawer = DrawerType.middle;
 
   Widget bottomRender(){
     if(currentDrawer == DrawerType.left){
-      return const Positioned(child: LeftDrawer());
+      return const Positioned(
+          left: 0, right: 60,
+          child: LeftDrawer()
+      );
     }else if(currentDrawer == DrawerType.right){
-      return const Positioned(child: RightDrawer());
+      return const Positioned(
+          left: 60,right: 0,
+          child: RightDrawer()
+      );
     }
     return const Text("");
   }
@@ -82,6 +92,20 @@ class _GestureState extends State<Gesture> {
           }else if((offset.dx + detail.delta.dx) < 0){
             currentDrawer = DrawerType.right;
           }
+          if(detail.delta.dx > 0){
+            if(bottomMenu.dy < 0){
+              bottomMenu = Offset(0.0, bottomMenu.dy + detail.delta.dx);
+            }else{
+              bottomMenu = const Offset(0.0, 50.0);
+            }
+          }else if(detail.delta.dx < 0){
+            if(bottomMenu.dy > -50){
+              bottomMenu = Offset(0.0, bottomMenu.dy + detail.delta.dx);
+            }else{
+              bottomMenu = const Offset(0.0, -80.0);
+            }
+          }
+
           offset = Offset(offset.dx + detail.delta.dx, 0);
         });
       },
@@ -112,39 +136,39 @@ class _GestureState extends State<Gesture> {
             left: offset.dx,
             child:const MyHomePage() ,
           ),
+          Positioned(
+              bottom: bottomMenu.dy,
+              child: Container(
+                width: MediaQuery.of(context).size.width ,
+                height: 50.sp,
+                decoration: const BoxDecoration(
+                  color: Colors.black
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(children: const [
+                      Icon(Icons.ac_unit_outlined,color: Colors.white,),
+                      Text("菜单1", style: TextStyle(color: Colors.white, fontSize: 16),)
+                    ],),
+                    Column(children: const [
+                      Icon(Icons.ac_unit_outlined,color: Colors.white,),
+                      Text("菜单2", style: TextStyle(color: Colors.white, fontSize: 16),)
+                    ],),
+                    Column(children: const [
+                      Icon(Icons.ac_unit_outlined,color: Colors.white,),
+                      Text("菜单3", style: TextStyle(color: Colors.white, fontSize: 16),)
+                    ],)
+                  ],
+                ),
+              )),
         ],
       ))
     );
   }
 }
 
-class LeftDrawer extends StatefulWidget {
-  const LeftDrawer({Key? key}) : super(key: key);
 
-  @override
-  State<LeftDrawer> createState() => _LeftDrawerState();
-}
-
-class _LeftDrawerState extends State<LeftDrawer> {
-  @override
-  Widget build(BuildContext context) {
-    return const Text("left drawer", style:TextStyle(color: Colors.red));
-  }
-}
-
-class RightDrawer extends StatefulWidget {
-  const RightDrawer({Key? key}) : super(key: key);
-
-  @override
-  State<RightDrawer> createState() => _RightDrawerState();
-}
-
-class _RightDrawerState extends State<RightDrawer> {
-  @override
-  Widget build(BuildContext context) {
-    return const Text("right drawer", style: TextStyle(color: Colors.yellow));
-  }
-}
 
 
 class MyHomePage extends StatefulWidget {
