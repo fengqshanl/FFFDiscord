@@ -13,11 +13,12 @@ class _LeftDrawerState extends State<LeftDrawer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
       // width: MediaQuery.of(context).size.width - 60,
       decoration: const BoxDecoration(
         color: Colors.white24,
         borderRadius: BorderRadius.all(Radius.circular(10)),
+        // border: Border.all(width: 2, color: Colors.blue)
       ),
       child: Row(
         children: [
@@ -30,7 +31,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
             ),
             child: Column(
               children: [
-                const SizedBox(height: 40,),
+                SizedBox(height:MediaQuery.of(context).padding.top ,),
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: const BoxDecoration(
@@ -75,32 +76,38 @@ class _LeftDrawerState extends State<LeftDrawer> {
           ),
           Expanded(
             child: Container(
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                border: Border.all(width: 2 , color: Colors.red)
+              margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).padding.top, 0, 0),
+              height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                // border: Border.all(width: 2 , color: Colors.red)
               ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 40,),
+                SizedBox(height: 10.sp,),
                 Row(
-                  children: const [
-                    Icon(Icons.tag, color: Colors.white, size: 10),
-                    Text("Yew", style: TextStyle(color: Colors.white, fontSize: 16)),
-                    Expanded(child:SizedBox()),
-                    Icon(Icons.more_horiz),
+                  children: [
+                    SizedBox(width: 8.sp,),
+                    const Icon(Icons.tag, color: Colors.white, size: 10),
+                    const Text("Yew", style: TextStyle(color: Colors.white, fontSize: 16)),
+                    const Expanded(child:SizedBox()),
+                    const Icon(Icons.more_horiz, color: Colors.white,),
+                    SizedBox(width: 8.sp,)
                   ],
                 ),
                 Row(children: [
                   Container(
-                    margin:  const EdgeInsets.all(12),
+                    margin:  const EdgeInsets.all(6),
                     padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                     decoration: const BoxDecoration(
                       color: Colors.white38,
                       borderRadius: BorderRadius.all(Radius.circular(10))
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Icon(Icons.language_outlined),
                         Text("公开", style: TextStyle(color: Colors.white, fontSize: 12))
@@ -108,10 +115,10 @@ class _LeftDrawerState extends State<LeftDrawer> {
                     ),
                   )
                 ]),
-                 Container(
-                     margin:  const EdgeInsets.all(12),
-                     padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
-                      height: 25.sp,
+                Container(
+                     margin:  const EdgeInsets.all(6),
+                     padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                      height: 30.sp,
                         decoration: const BoxDecoration(
                           color: Colors.white12,
                         ),
@@ -124,19 +131,73 @@ class _LeftDrawerState extends State<LeftDrawer> {
                             ],
                           ),
                         ),
-                const SizedBox(height: 14,),
+                SizedBox(height: 6.sp,),
                 Row(
-                  children: const [
-                    Icon(Icons.library_books_outlined, color: Colors.white,),
-                    Text("rules", style: TextStyle(color: Colors.white, fontSize: 12))
+                  children: [
+                    SizedBox(width: 8.sp,),
+                    const Icon(Icons.library_books_outlined, color: Colors.white,),
+                    SizedBox(width: 2.sp,),
+                    const Text("rules", style: TextStyle(color: Colors.white, fontSize: 12))
                   ],
                 ),
-                const SizedBox(height: 14,),
-
+                SizedBox(height: 6.sp,),
+                Expanded(child: Container(
+                  height: 50.sp,
+                  width: 50.sp,
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1,color: Colors.red)
+                  ),
+                  child: const ExpansionTile(
+                    initiallyExpanded: true,
+                    title: Text("GENERAL", style: TextStyle(color: Colors.white),),
+                    children: [
+                      invitationItem(
+                        title: "announcements",
+                        img: Icon(Icons.surround_sound_rounded),
+                        tag: false,
+                      )
+                    ],
+                  ) ,
+                ) ),
               ],
             ),
           )
           ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class invitationItem extends StatelessWidget {
+  final String title;
+  final bool tag;
+  final Widget img;
+  const invitationItem({
+    Key? key,
+    required this.title,
+    required this.tag,
+    required this.img
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 10.sp,
+      child: Row(
+        children: [
+          tag ? Container(
+            height: 5,
+            width: 5,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(50))
+            ),
+            child: const Text(""),
+          ): const SizedBox(height: 5, width: 5,),
+          img,
+          Text(title)
         ],
       ),
     );

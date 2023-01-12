@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:chat/right.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,7 +68,7 @@ class _GestureState extends State<Gesture> {
   Offset offset = const Offset(0.0,0.0);
   Offset bottomMenu = const Offset(0.0, -80.0);
   DrawerType currentDrawer = DrawerType.middle;
-
+  GlobalKey _bottomMenuKey = GlobalKey();
   Widget bottomRender(){
     if(currentDrawer == DrawerType.left){
       return const Positioned(
@@ -96,13 +98,13 @@ class _GestureState extends State<Gesture> {
             if(bottomMenu.dy < 0){
               bottomMenu = Offset(0.0, bottomMenu.dy + detail.delta.dx);
             }else{
-              bottomMenu = const Offset(0.0, 50.0);
+              bottomMenu = const Offset(0.0, 0);
             }
           }else if(detail.delta.dx < 0){
             if(bottomMenu.dy > -50){
               bottomMenu = Offset(0.0, bottomMenu.dy + detail.delta.dx);
             }else{
-              bottomMenu = const Offset(0.0, -80.0);
+              bottomMenu = const Offset(0.0, -50);
             }
           }
 
@@ -111,6 +113,7 @@ class _GestureState extends State<Gesture> {
       },
       onHorizontalDragEnd: (detail){
           var current = offset.dx;
+
           if(current >= (MediaQuery.of(context).size.width / 2)){
             setState((){
               offset = Offset(MediaQuery.of(context).size.width - 50, 0);
@@ -139,26 +142,20 @@ class _GestureState extends State<Gesture> {
           Positioned(
               bottom: bottomMenu.dy,
               child: Container(
+                key: _bottomMenuKey ,
                 width: MediaQuery.of(context).size.width ,
-                height: 50.sp,
+                height: 40,
                 decoration: const BoxDecoration(
-                  color: Colors.black
+                  color: Colors.black,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(children: const [
-                      Icon(Icons.ac_unit_outlined,color: Colors.white,),
-                      Text("菜单1", style: TextStyle(color: Colors.white, fontSize: 16),)
-                    ],),
-                    Column(children: const [
-                      Icon(Icons.ac_unit_outlined,color: Colors.white,),
-                      Text("菜单2", style: TextStyle(color: Colors.white, fontSize: 16),)
-                    ],),
-                    Column(children: const [
-                      Icon(Icons.ac_unit_outlined,color: Colors.white,),
-                      Text("菜单3", style: TextStyle(color: Colors.white, fontSize: 16),)
-                    ],)
+                  children: const [
+                      Icon(Icons.pivot_table_chart_sharp,color: Colors.white,),
+                      Icon(Icons.perm_identity_outlined,color: Colors.white,),
+                      Icon(Icons.search,color: Colors.white,),
+                    Icon(Icons.healing,color: Colors.white,),
+                    Icon(Icons.face_unlock_rounded,color: Colors.white,),
                   ],
                 ),
               )),
