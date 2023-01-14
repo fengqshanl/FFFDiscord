@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:chat/right.dart';
+import 'package:chat/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context , child) {
         return MaterialApp(
+          routes: routes,
           debugShowCheckedModeBanner: false,
           title: 'First Method',
           theme: ThemeData(
@@ -151,11 +153,26 @@ class _GestureState extends State<Gesture> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: const [
-                      Icon(Icons.pivot_table_chart_sharp,color: Colors.white,),
-                      Icon(Icons.perm_identity_outlined,color: Colors.white,),
-                      Icon(Icons.search,color: Colors.white,),
-                    Icon(Icons.healing,color: Colors.white,),
-                    Icon(Icons.face_unlock_rounded,color: Colors.white,),
+                    routeLink(
+                      routeName: "home",
+                      linkIcon: Icon(Icons.pivot_table_chart_sharp,color: Colors.white,) ,
+                    ),
+                    routeLink(
+                      routeName: "friend",
+                      linkIcon: Icon(Icons.perm_identity_outlined,color: Colors.white,),
+                    ),
+                    routeLink(
+                      routeName: "search",
+                      linkIcon: Icon(Icons.search,color: Colors.white,),
+                    ),
+                    routeLink(
+                      routeName: "notice",
+                      linkIcon: Icon(Icons.healing,color: Colors.white,),
+                    ),
+                    routeLink(
+                      routeName: "set",
+                      linkIcon:  Icon(Icons.face_unlock_rounded,color: Colors.white,),
+                    ),
                   ],
                 ),
               )),
@@ -165,8 +182,33 @@ class _GestureState extends State<Gesture> {
   }
 }
 
+class routeLink extends StatefulWidget {
+  final Widget linkIcon;
+  final String routeName;
+  const routeLink({
+    Key? key,
+    required this.linkIcon,
+    required this.routeName,
+  }) : super(key: key);
 
+  @override
+  State<routeLink> createState() => _routeLinkState();
+}
 
+class _routeLinkState extends State<routeLink> {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black,
+      child: InkWell(
+        child: widget.linkIcon,
+        onTap: (){
+          Navigator.pushNamed(context, widget.routeName);
+        },
+      ),
+    );
+  }
+}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -221,174 +263,179 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child:Scaffold(
-        drawer: const Text("drawer"),
-        appBar: AppBar(
-            actions: [
-              IconButton(
-                  onPressed: (){},
-                  icon: const Icon(Icons.search)
-              ),
-              IconButton(
-                icon: const Icon(Icons.people_alt),
-                onPressed: () {
+    return Material(
+      child:SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child:Scaffold(
+          backgroundColor: Colors.black87,
+          appBar: AppBar(
+            backgroundColor: Colors.black12,
+              actions: [
+                IconButton(
+                    onPressed: (){},
+                    icon: const Icon(Icons.search)
+                ),
+                IconButton(
+                  icon: const Icon(Icons.people_alt),
+                  onPressed: () {
 
-                },
+                  },
+                ),
+              ],
+              title: Row(
+                children: const [
+                  Icon(Icons.menu),
+                  SizedBox(width: 15,),
+                  Icon(Icons.chat_bubble_outline, size: 16),
+                  SizedBox(width: 4),
+                  Text("help",style: TextStyle(fontSize: 14),)
+                ],
+              )
+          ),
+          body: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(8.sp),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                height: 40.sp,
+                decoration: const BoxDecoration(
+                    color: Colors.black45
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(8))
+                      ),
+                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.thumbs_up_down, color: Colors.white, size: 14,),
+                          SizedBox(width: 6,),
+                          Text("排序 & 查看", style: TextStyle(
+                              color: Colors.white
+                          )),
+                          SizedBox(width: 2,),
+                          Icon(Icons.arrow_drop_down, color: Colors.white, size: 14,)
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(Radius.circular(8))
+                      ),
+                      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                          Text("标签", style: TextStyle(
+                              color: Colors.white
+                          )),
+                          SizedBox(width: 2),
+                          Icon(Icons.arrow_drop_down, color: Colors.white, size: 14,)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                  flex:1,
+                  child:ListView.builder(
+                      itemCount: enquiry.length,
+                      controller: _controller,
+                      itemBuilder: (context, index) {
+                        var value = enquiry[0];
+                        return Row(
+                            children: [
+                              Expanded(
+                                  flex: 1,
+                                  child:  Container(
+                                    padding: EdgeInsets.all(8.sp),
+                                    margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.black45,
+                                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                                    ),
+                                    child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.all(4),
+                                                decoration: const BoxDecoration(
+                                                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                    color: Colors.black54
+                                                ),
+                                                child: Text(
+                                                    value["tag"]!,
+                                                    style: const TextStyle(color: Colors.white, fontSize: 12)
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(value['user_name']!,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  )),
+                                              const SizedBox(width: 8),
+                                              Text(value["time_to_now"]!,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  ))
+                                            ],
+                                          ),
+                                          Text(
+                                              value["title"]!,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                              )
+                                          ),
+                                          Text(
+                                            value["content"]!,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: Colors.white
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Icon(Icons.chat_outlined, color: Colors.white, size: 14),
+                                              Text(value["chat_number"]!, style: const TextStyle(color: Colors.white)),
+                                              const Expanded(child: const Text(""),flex: 1),
+                                              const Text("data", style: TextStyle(color: Colors.white))
+                                            ],
+                                          )
+                                        ]
+                                    ),
+                                  )
+                              ),
+                            ]
+                        );
+                      }
+                  )
               )
             ],
-            title: Row(
-              children: const [
-                Icon(Icons.chat_bubble_outline, size: 16),
-                SizedBox(width: 4),
-                Text("help",style: TextStyle(fontSize: 14),)
-              ],
-            )
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _incrementCounter,
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ), // This trailing comma makes auto-formatting nicer for build methods.
         ),
-        body: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(8.sp),
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-              height: 40.sp,
-              decoration: const BoxDecoration(
-                  color: Colors.black45
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(8))
-                    ),
-                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.thumbs_up_down, color: Colors.white, size: 14,),
-                        SizedBox(width: 6,),
-                        Text("排序 & 查看", style: TextStyle(
-                            color: Colors.white
-                        )),
-                        SizedBox(width: 2,),
-                        Icon(Icons.arrow_drop_down, color: Colors.white, size: 14,)
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(8))
-                    ),
-                    padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
-                        Text("标签", style: TextStyle(
-                            color: Colors.white
-                        )),
-                        SizedBox(width: 2),
-                        Icon(Icons.arrow_drop_down, color: Colors.white, size: 14,)
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-                flex:1,
-                child:ListView.builder(
-                    itemCount: enquiry.length,
-                    controller: _controller,
-                    itemBuilder: (context, index) {
-                      var value = enquiry[0];
-                      return Row(
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child:  Container(
-                                  padding: EdgeInsets.all(8.sp),
-                                  margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.indigo,
-                                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                                  ),
-                                  child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: const BoxDecoration(
-                                                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                                                  color: Colors.black54
-                                              ),
-                                              child: Text(
-                                                  value["tag"]!,
-                                                  style: const TextStyle(color: Colors.white, fontSize: 12)
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(value['user_name']!,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                )),
-                                            const SizedBox(width: 8),
-                                            Text(value["time_to_now"]!,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                ))
-                                          ],
-                                        ),
-                                        Text(
-                                            value["title"]!,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            )
-                                        ),
-                                        Text(
-                                          value["content"]!,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: Colors.white
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Icon(Icons.chat_outlined, color: Colors.white, size: 14),
-                                            Text(value["chat_number"]!, style: const TextStyle(color: Colors.white)),
-                                            const Expanded(child: const Text(""),flex: 1),
-                                            const Text("data", style: TextStyle(color: Colors.white))
-                                          ],
-                                        )
-                                      ]
-                                  ),
-                                )
-                            ),
-                          ]
-                      );
-                    }
-                )
-            )
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
