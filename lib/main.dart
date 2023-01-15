@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:chat/bottom.dart';
 import 'package:chat/right.dart';
 import 'package:chat/routes.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class _GestureState extends State<Gesture> {
   Offset offset = const Offset(0.0,0.0);
   Offset bottomMenu = const Offset(0.0, -80.0);
   DrawerType currentDrawer = DrawerType.middle;
-  GlobalKey _bottomMenuKey = GlobalKey();
+  final GlobalKey _bottomMenuKey = GlobalKey();
   Widget bottomRender(){
     if(currentDrawer == DrawerType.left){
       return const Positioned(
@@ -130,10 +131,9 @@ class _GestureState extends State<Gesture> {
             });
           }
         },
-      child: SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Stack(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(
         fit: StackFit.expand,
         children: [
           bottomRender(),
@@ -143,52 +143,26 @@ class _GestureState extends State<Gesture> {
           ),
           Positioned(
               bottom: bottomMenu.dy,
-              child: Container(
-                key: _bottomMenuKey ,
-                width: MediaQuery.of(context).size.width ,
-                height: 40,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    routeLink(
-                      routeName: "home",
-                      linkIcon: Icon(Icons.pivot_table_chart_sharp,color: Colors.white,) ,
-                    ),
-                    routeLink(
-                      routeName: "friend",
-                      linkIcon: Icon(Icons.perm_identity_outlined,color: Colors.white,),
-                    ),
-                    routeLink(
-                      routeName: "search",
-                      linkIcon: Icon(Icons.search,color: Colors.white,),
-                    ),
-                    routeLink(
-                      routeName: "notice",
-                      linkIcon: Icon(Icons.healing,color: Colors.white,),
-                    ),
-                    routeLink(
-                      routeName: "set",
-                      linkIcon:  Icon(Icons.face_unlock_rounded,color: Colors.white,),
-                    ),
-                  ],
-                ),
-              )),
+              child: BottomMenuSheet(bottomMenuKey: _bottomMenuKey,)
+          ),
         ],
-      ))
+      ),
+      )
     );
   }
 }
 
+
+
 class routeLink extends StatefulWidget {
-  final Widget linkIcon;
+  final IconData linkIcon;
   final String routeName;
+  final bool active;
   const routeLink({
     Key? key,
     required this.linkIcon,
     required this.routeName,
+    this.active = false
   }) : super(key: key);
 
   @override
@@ -201,7 +175,10 @@ class _routeLinkState extends State<routeLink> {
     return Material(
       color: Colors.black,
       child: InkWell(
-        child: widget.linkIcon,
+        child: Icon(
+            widget.linkIcon,
+            color: widget.active ? Colors.white : Colors.white38,
+        ),
         onTap: (){
           Navigator.pushNamed(context, widget.routeName);
         },

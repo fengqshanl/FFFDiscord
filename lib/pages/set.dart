@@ -10,6 +10,9 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
-    return const Text("set");
+    return const Scaffold(
+      body: Text("set"),
+      backgroundColor: Colors.black,
+    );
   }
 }

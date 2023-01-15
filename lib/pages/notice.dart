@@ -10,6 +10,9 @@ class Notice extends StatefulWidget {
 class _NoticeState extends State<Notice> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Notice");
+    return const Scaffold(
+      body: Text("Notice"),
+      backgroundColor: Colors.black,
+    );
   }
 }

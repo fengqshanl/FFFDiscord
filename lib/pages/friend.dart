@@ -10,7 +10,10 @@ class Friend extends StatefulWidget {
 class _FriendState extends State<Friend> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Friend");
+    return const Scaffold(
+      body: Text("Friend"),
+      backgroundColor: Colors.black,
+    );
   }
 }
 
