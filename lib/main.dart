@@ -156,7 +156,7 @@ class _GestureState extends State<Gesture> {
 
 class routeLink extends StatefulWidget {
   final IconData linkIcon;
-  final String routeName;
+  final Widget routeName;
   final bool active;
   const routeLink({
     Key? key,
@@ -180,7 +180,12 @@ class _routeLinkState extends State<routeLink> {
             color: widget.active ? Colors.white : Colors.white38,
         ),
         onTap: (){
-          Navigator.pushNamed(context, widget.routeName);
+          Navigator.push(context, PageRouteBuilder(pageBuilder: (_, __, ___) =>
+              widget.routeName,
+            transitionDuration: const Duration(seconds: 0),
+          ),
+          );
+          // Navigator.pushNamed(context, widget.routeName);
         },
       ),
     );

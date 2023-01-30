@@ -1,3 +1,7 @@
+import 'package:chat/pages/friend.dart';
+import 'package:chat/pages/notice.dart';
+import 'package:chat/pages/search.dart';
+import 'package:chat/pages/set.dart';
 import 'package:flutter/material.dart';
 
 import 'main.dart';
@@ -16,20 +20,20 @@ class BottomMenuSheet extends StatefulWidget {
 }
 
 class _BottomSheetState extends State<BottomMenuSheet> {
-  Map<String, IconData> menuList = {
-    "home":Icons.pivot_table_chart_sharp,
-    "friend":Icons.perm_identity_outlined,
-    "search":Icons.search,
-    "notice":Icons.healing,
-    "set":Icons.face_unlock_rounded,
+  Map<IconData, Widget> menuList = {
+    Icons.pivot_table_chart_sharp: const MyHomePage(),
+    Icons.perm_identity_outlined: const Friend(),
+    Icons.search: const Search(),
+    Icons.healing: const Notice(),
+    Icons.face_unlock_rounded: const Setting(),
   };
   List<Widget> _menuRender (){
     int index = 0;
     List<Widget> menu = [];
     menuList.forEach((key, value) {
       menu.add(routeLink(
-        routeName: key,
-        linkIcon: value ,
+        routeName: value,
+        linkIcon: key,
         active: widget.active == index,
       ));
       index += 1;

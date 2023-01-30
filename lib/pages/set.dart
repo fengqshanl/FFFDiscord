@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../bottom.dart';
+
 class Setting extends StatefulWidget {
   const Setting({Key? key}) : super(key: key);
 
@@ -10,9 +12,11 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text("set"),
+    return Scaffold(
       backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
+      bottomSheet: BottomMenuSheet(bottomMenuKey: GlobalKey(), active: 4,) ,
+      body: const Text("set"),
     );
   }
 }
