@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:chat/bottom.dart';
+import 'package:chat/pages/search.dart';
 import 'package:chat/right.dart';
 import 'package:chat/routes.dart';
 import 'package:flutter/material.dart';
@@ -158,10 +159,12 @@ class routeLink extends StatefulWidget {
   final IconData linkIcon;
   final Widget routeName;
   final bool active;
+  final bool tag;
   const routeLink({
     Key? key,
     required this.linkIcon,
     required this.routeName,
+    this.tag = false,
     this.active = false
   }) : super(key: key);
 
@@ -180,11 +183,16 @@ class _routeLinkState extends State<routeLink> {
             color: widget.active ? Colors.white : Colors.white38,
         ),
         onTap: (){
-          Navigator.push(context, PageRouteBuilder(pageBuilder: (_, __, ___) =>
-              widget.routeName,
-            transitionDuration: const Duration(seconds: 0),
-          ),
-          );
+          if(!widget.tag){
+            Navigator.push(context,
+              PageRouteBuilder(pageBuilder: (_, __, ___) =>
+                widget.routeName,
+                transitionDuration: const Duration(seconds: 0),
+              ),
+            );
+          }else{
+            search(context);
+          }
           // Navigator.pushNamed(context, widget.routeName);
         },
       ),
@@ -397,7 +405,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             children: [
                                               const Icon(Icons.chat_outlined, color: Colors.white, size: 14),
                                               Text(value["chat_number"]!, style: const TextStyle(color: Colors.white)),
-                                              const Expanded(child: const Text(""),flex: 1),
+                                              const Expanded(flex: 1, child: Text("")),
                                               const Text("data", style: TextStyle(color: Colors.white))
                                             ],
                                           )

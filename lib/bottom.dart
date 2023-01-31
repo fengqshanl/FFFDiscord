@@ -23,7 +23,7 @@ class _BottomSheetState extends State<BottomMenuSheet> {
   Map<IconData, Widget> menuList = {
     Icons.pivot_table_chart_sharp: const MyHomePage(),
     Icons.perm_identity_outlined: const Friend(),
-    Icons.search: const Search(),
+    Icons.search: const Notice(),
     Icons.healing: const Notice(),
     Icons.face_unlock_rounded: const Setting(),
   };
@@ -35,6 +35,7 @@ class _BottomSheetState extends State<BottomMenuSheet> {
         routeName: value,
         linkIcon: key,
         active: widget.active == index,
+        tag: key == Icons.search
       ));
       index += 1;
     });

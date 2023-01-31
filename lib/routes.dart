@@ -9,7 +9,6 @@ import 'main.dart';
 Map<String, Widget Function(BuildContext)> routes = {
   "home"  : (context) => const Gesture(),
   "friend": (context) => const Friend(),
-  "search": (context) => const Search(),
   "notice": (context) => const Notice(),
   "set"   : (context) => const Setting()
 };

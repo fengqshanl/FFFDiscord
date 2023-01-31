@@ -14,8 +14,8 @@ class _NoticeState extends State<Notice> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      bottomSheet: BottomMenuSheet(bottomMenuKey: GlobalKey(),active: 3,) ,
-      body: const Text("notice"),
+      bottomSheet: BottomMenuSheet(bottomMenuKey: GlobalKey(), active: 3,) ,
+      body: const Text("notice", style: TextStyle(color: Colors.white),),
     );
   }
 }
